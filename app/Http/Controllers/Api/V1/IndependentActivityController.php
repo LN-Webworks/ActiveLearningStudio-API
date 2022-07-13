@@ -191,6 +191,7 @@ class IndependentActivityController extends Controller
         $this->authorize('create', [IndependentActivity::class, $suborganization]);
 
         $data = $request->validated();
+        $data['tags'] = implode(",", $data['tags']);
         $authenticatedUser = auth()->user();
 
         $independentActivity = $this->independentActivityRepository->createIndependentActivity($authenticatedUser, $suborganization, $data);

@@ -33,7 +33,8 @@ class IndependentActivity extends Model
         'clone_ctr',
         'status',
         'indexing',
-        'original_user'
+        'original_user',
+        'tags'
     ];
 
     /**

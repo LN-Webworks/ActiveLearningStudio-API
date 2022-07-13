@@ -41,6 +41,7 @@ class IndependentActivityCreateRequest extends FormRequest
             'source_type' => 'nullable|string',
             'source_url' => 'nullable|string',
             'organization_visibility_type_id' => 'required|exists:organization_visibility_types,id',
+            'tags' => 'array'
         ];
     }
 }
