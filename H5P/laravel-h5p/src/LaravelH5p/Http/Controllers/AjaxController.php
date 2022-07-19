@@ -93,17 +93,22 @@ class AjaxController extends Controller
 
     public function files(Request $request)
     {
-        $fieldParam = json_decode($request->get('field'));
-        if (json_last_error() === JSON_ERROR_NONE) {
-            $filePath = $request->file('file');
-            $h5p = App::make('LaravelH5p');
-            $editor = $h5p::$h5peditor;
-            $token = csrf_token();
-            // $editor->ajax->action(H5PEditorEndpoints::FILES, $request->get('_token'), $request->get('contentId'));
-            $editor->ajax->action(H5PEditorEndpoints::FILES, $token, $request->get('contentId'));     
-        } else {
-            throw new GeneralException('Invalid json format of field param!');
-        }        
+        try{
+            $fieldParam = json_decode($request->get('field'));
+            if (json_last_error() === JSON_ERROR_NONE) {
+                
+                $filePath = $request->file('file');
+                $h5p = App::make('LaravelH5p');
+                $editor = $h5p::$h5peditor;
+                $token = csrf_token();
+                // $editor->ajax->action(H5PEditorEndpoints::FILES, $request->get('_token'), $request->get('contentId'));
+                $abc=  $editor->ajax->action(H5PEditorEndpoints::FILES, $token, $request->get('contentId')); 
+            } else {
+                throw new GeneralException('Invalid json format of field param!');
+            }   
+        } catch(\Exception $e) {
+            return response()->json(['error' => $e->getMessage()]);
+        }
     }
 
     public function filter(Request $request)
