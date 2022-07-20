@@ -40,7 +40,8 @@ class ActivityCreateRequest extends FormRequest
             'author_tag_id.*' => 'nullable|integer|distinct|exists:author_tags,id,deleted_at,NULL',
             'source_type' => 'nullable|string',
             'source_url' => 'nullable|string',
-            'duration' => 'nullable|string'
+            'duration' => 'nullable|string',
+            'custom_thumbnail' => 'boolean'
         ];
     }
 }
