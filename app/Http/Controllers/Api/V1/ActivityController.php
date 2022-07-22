@@ -164,20 +164,21 @@ class ActivityController extends Controller
         $this->authorize('create', [Activity::class, $playlist->project]);
         
         $data = $request->validated();
-        
-        if(array_key_exists('source_url', $data) && strpos($data['source_url'], 'youtube') !== false){
-            $link = $data['source_url'];
-            $video_id = explode("?v=", $link);
-            if (!isset($video_id[1])) {
-                $video_id = explode("youtu.be/", $link);
-            }
-            $youtubeID = $video_id[1];
-            if (empty($video_id[1])) $video_id = explode("/v/", $link);
-            $video_id = explode("&", $video_id[1]);
-            $youtubeVideoID = $video_id[0];
-            if ($youtubeVideoID) {
-                $data['thumb_url'] = 'http://img.youtube.com/vi/'.$youtubeVideoID.'/sddefault.jpg';
-            } else {
+        if($data['custom_thumbnail'] === false){
+            if(array_key_exists('source_url', $data) && strpos($data['source_url'], 'youtube') !== false){
+                $link = $data['source_url'];
+                $video_id = explode("?v=", $link);
+                if (!isset($video_id[1])) {
+                    $video_id = explode("youtu.be/", $link);
+                }
+                $youtubeID = $video_id[1];
+                if (empty($video_id[1])) $video_id = explode("/v/", $link);
+                $video_id = explode("&", $video_id[1]);
+                $youtubeVideoID = $video_id[0];
+                if ($youtubeVideoID) {
+                    $data['thumb_url'] = 'http://img.youtube.com/vi/'.$youtubeVideoID.'/sddefault.jpg';
+                } else {
+                }
             }
         }
         
@@ -201,7 +202,7 @@ class ActivityController extends Controller
 
                 $updated_playlist = new PlaylistResource($this->playlistRepository->find($playlist->id));
                 event(new PlaylistUpdatedEvent($updated_playlist->project, $updated_playlist));
-
+                
                 return response([
                     'activity' => new ActivityResource($activity),
                 ], 201);
