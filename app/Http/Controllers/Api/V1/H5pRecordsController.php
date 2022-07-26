@@ -7,9 +7,21 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\H5pRecordRequest;
 use App\Http\Resources\V1\H5pRecordResource;
+use App\Repositories\H5pRecord\H5pRecordRepository;
 
 class H5pRecordsController extends Controller
 {
+
+    /**
+     * ActivityController constructor.
+     *
+     * @param h5pRecordRepositoryInterface $h5pRecordRepository
+     */
+    public function __construct(H5pRecordRepository $h5pRecordRepository)
+    {
+        $this->h5pRecordRepository = $h5pRecordRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -85,5 +97,20 @@ class H5pRecordsController extends Controller
     public function destroy(H5pRecords $h5pRecords)
     {
         //
+    }
+
+    public function getRecordByPlaylistId ($playlistId)
+    {
+        $records = $this->h5pRecordRepository->getH5pRecordByPlaylistId($playlistId);
+        $results = [];
+        foreach ($records as $key => $record) {
+            $results[] = [
+                'statement' => json_decode($record->statement),
+                'activity_name' => trim($record->activity_name)
+            ];
+        }
+        return response([
+            'h5pRecords' => $results
+        ], 200);
     }
 }

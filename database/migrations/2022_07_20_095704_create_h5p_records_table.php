@@ -17,9 +17,10 @@ class CreateH5pRecordsTable extends Migration
             $table->increments('id');
             $table->unsignedBigInteger('playlist_id');
             $table->foreign('playlist_id')->references('id')->on('playlists');
-            $table->unsignedBigInteger('activity_id');
+            $table->unsignedBigInteger('activity_id')->unique();
             $table->foreign('activity_id')->references('id')->on('activities');
             $table->text('statement');
+            $table->char('activity_name', 128);
             $table->timestamps();
         });
     }

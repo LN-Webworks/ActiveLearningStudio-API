@@ -10,5 +10,6 @@ class H5pRecords extends Model
         'playlist_id',
         'activity_id',
         'statement',
+        'activity_name'
     ];
 }

@@ -27,6 +27,7 @@ class H5pRecordRequest extends FormRequest
             'playlist_id' => 'required',
             'activity_id' => 'required',
             'statement' => 'required',
+            'activity_name' => 'required',
         ];
     }
 }
